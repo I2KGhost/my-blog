@@ -1,63 +1,91 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import AboutHeroImage from '../assets/about_drekoria_logo.png'; // смени с правилното разширение
 import Layout from '../layouts/BlogPost.astro';
+
+const pageTitle = "";
+const pageDescription = "Learn more about Ivaylo (I2KGhost) and the Drekoria project.";
 ---
 
 <Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
+  title={pageTitle}
+  description={pageDescription}
+  pubDate={new Date('16 August 2025')}
+  
 >
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+  <article class="about-container">
+	<img src={AboutHeroImage.src} alt="Drekoria Logo" class="about-logo" />
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+    <p>Hey, I’m Ivaylo 👋</p>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+    <p>Online, most people know me as I2KGhost.
+    The story behind that name is… well, a journey in itself.</p>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+    <p>Back in my teenage years, I went through a lot of nicknames. At the time, they all sounded cool, but eventually you grow up and realize… maybe they don’t sound that cool anymore. 😂</p>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
+    <p>So, I decided to pick something new. My first idea was I2K, basically a shortened version of my own names. It worked fine on most sites, but some platforms didn’t accept nicknames with only three characters. That meant I either had to invent something entirely new or add to what I already had.</p>
+
+    <p>Since I’ve always liked shadows, ghosts, and mysterious stuff, I added Ghost to the end — keeping I2K but making it longer and more unique. And that’s how I2KGhost was born.</p>
+
+    <h2>My path into tech 🖥️</h2>
+
+    <p>My first real experiments with code go all the way back to 2007–2008, when I joined a college for computer networks. At that time, I wasn’t exactly fascinated — honestly, I had no idea what all those codes were for.</p>
+
+    <p>Much later, I stumbled into programming again when the first private programming university opened in my country. Back then, all their courses were free and open to everyone. That’s when I got hooked — first on Java (mostly because of Android, and I understood almost nothing), then briefly C, C++, C#, and finally Python.</p>
+
+    <p>Python stuck with me. Even today, I can’t say I know it perfectly, but I can write and understand simple code. Somewhere in between, I also tried my hand at web design.</p>
+
+    <h2>From code to fantasy worlds 📚🐉</h2>
+
+    <p>After my programming adventures, I got the idea to write a fantasy novel. Around that time, Game of Thrones had just come out, and I thought, “I’ll be the next George R.R. Martin.”
+    The working title was The Night of the Raven (yes, Gothic fans will get the reference 😅).</p>
+
+    <p>That book idea stayed with me for years — and still does — but with a new name: Drekoria. Funny enough, Drekoria started as the name of an empire in the story, but eventually became the name of the entire project.</p>
+
+    <h2>The Drekoria Universe 🎙️</h2>
+
+    <p>Today, Drekoria is a multi-project brand:</p>
+
+    <ul>
+      <li>🌌 <b>Drekoria</b> – where myths inspire the future. A nature-inspired fantasy world full of lore, characters, and history.</li>
+      <li>🎧 <b>Chronicles of Drekoria Podcast</b> – for artists, writers, and creators. Tips, tricks, creative discussions, and inspiring stories.</li>
+      <li>⚡ <b>The Voice of Drekoria</b> – tech-focused podcast about AI, robotics, and programming.</li>
+      <li>📷 <b>Drekoria Tech</b> – Instagram branch of The Voice of Drekoria, sharing tools, experiments, and AI creations.</li>
+    </ul>
+
+    <p>And because I love building things, I’m also working on an Etsy store that combines both the creative and tech sides of Drekoria with unique products.</p>
+
+    <h2>5 Random Facts About Me</h2>
+    <ul>
+      <li><b>Favorite drink</b> – Red wine if we’re talking alcohol, lemonade (any flavor) if not.</li>
+      <li><b>Most absurd thing I’ve automated</b> – My heater. Yep, I can turn it on from my phone while coming home in winter. 😅</li>
+      <li><b>Favorite game</b> – Many, but World of Warcraft will always have a place in my heart. Also Gothic — countless sleepless nights spent there.</li>
+      <li><b>If the internet disappeared for a year</b> – Just give me books and don’t bother me. I’ll survive. 😂</li>
+      <li><b>Favorite keyboard sound</b> – I used to like loud blue switches for gaming, but now I prefer quiet linear switches. I type more than I game these days.</li>
+    </ul>
+  </article>
 </Layout>
+<style>
+  .about-container {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .about-logo {
+    max-width: 550px; /* размер на десктоп */
+    width: 100%;
+    height: auto;
+    margin: 1rem auto;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .about-logo {
+      max-width: 300px; /* по-малък размер за мобилен */
+    }
+  }
+</style>
