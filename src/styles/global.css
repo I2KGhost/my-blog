@@ -5,41 +5,50 @@
  */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
+	--accent: #36c2ff;
+	--accent-dark: #1790d9;
+	--background: 9, 12, 20;
+	--surface: 16, 22, 35;
+	--text-primary: 227, 237, 255;
+	--text-secondary: 156, 177, 214;
+	--border-color: 47, 65, 96;
+	--black: var(--text-primary);
+	--gray: var(--text-secondary);
+	--gray-light: 36, 50, 77;
+	--gray-dark: var(--text-primary);
+	--gray-gradient: rgba(var(--surface), 96%), rgb(var(--background));
 	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px
-		rgba(var(--gray), 33%);
+		0 2px 6px rgba(0, 0, 0, 22%),
+		0 10px 24px rgba(0, 0, 0, 30%),
+		0 14px 32px rgba(0, 0, 0, 28%);
+	color-scheme: dark;
 }
+
 @font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-regular.woff") format("woff");
+	font-family: 'Atkinson';
+	src: url('/fonts/atkinson-regular.woff') format('woff');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
 @font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-bold.woff") format("woff");
+	font-family: 'Atkinson';
+	src: url('/fonts/atkinson-bold.woff') format('woff');
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
 }
 body {
-	font-family: "Atkinson", sans-serif;
+	font-family: 'Atkinson', sans-serif;
 	margin: 0;
 	padding: 0;
 	text-align: left;
 	background: linear-gradient(var(--gray-gradient)) no-repeat;
+	background-color: rgb(var(--background));
 	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
+	color: rgb(var(--text-primary));
 	font-size: 20px;
 	line-height: 1.7;
 }
@@ -56,8 +65,9 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: rgb(var(--text-primary));
 	line-height: 1.2;
+	text-wrap: balance;
 }
 h1 {
 	font-size: 3.052em;
@@ -82,13 +92,14 @@ a {
 	color: var(--accent);
 }
 a:hover {
-	color: var(--accent);
+	color: #8fdfff;
 }
 p {
 	margin-bottom: 1em;
+	color: rgb(var(--text-secondary));
 }
 .prose p {
-	margin-bottom: 2em;
+	margin-bottom: 1.8em;
 }
 textarea {
 	width: 100%;
@@ -103,16 +114,19 @@ table {
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: 10px;
 }
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	background-color: rgba(var(--gray-light), 0.8);
+	border-radius: 4px;
 }
 pre {
-	padding: 1.5em;
-	border-radius: 8px;
+	padding: 1.2em;
+	border-radius: 10px;
+	background: rgba(var(--surface), 0.8);
+	border: 1px solid rgba(var(--border-color), 0.8);
+	overflow-x: auto;
 }
 pre > code {
 	all: unset;
@@ -120,12 +134,12 @@ pre > code {
 blockquote {
 	border-left: 4px solid var(--accent);
 	padding: 0 0 0 20px;
-	margin: 0px;
-	font-size: 1.333em;
+	margin: 0;
+	font-size: 1.2em;
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid rgba(var(--border-color), 0.8);
 }
 @media (max-width: 720px) {
 	body {
@@ -144,12 +158,8 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }

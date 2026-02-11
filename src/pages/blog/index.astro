@@ -30,6 +30,10 @@ const posts = (await getCollection('blog')).sort(
 			}
 			ul li {
 				width: calc(50% - 1rem);
+				background: rgba(var(--surface), 0.68);
+				border: 1px solid rgba(var(--border-color), 0.7);
+				border-radius: 14px;
+				padding: 0.8rem;
 			}
 			ul li * {
 				text-decoration: none;
@@ -39,6 +43,7 @@ const posts = (await getCollection('blog')).sort(
 				width: 100%;
 				margin-bottom: 1rem;
 				text-align: center;
+				padding: 1rem;
 			}
 			ul li:first-child img {
 				width: 100%;
@@ -49,6 +54,7 @@ const posts = (await getCollection('blog')).sort(
 			ul li img {
 				margin-bottom: 0.5rem;
 				border-radius: 12px;
+				border: 1px solid rgba(var(--border-color), 0.5);
 			}
 			ul li a {
 				display: block;
@@ -64,10 +70,14 @@ const posts = (await getCollection('blog')).sort(
 			}
 			ul li a:hover h4,
 			ul li a:hover .date {
-				color: rgb(var(--accent));
+				color: var(--accent);
 			}
 			ul a:hover img {
 				box-shadow: var(--box-shadow);
+			}
+			ul li:hover {
+				transform: translateY(-2px);
+				border-color: color-mix(in srgb, var(--accent) 45%, transparent);
 			}
 			@media (max-width: 720px) {
 				ul {
@@ -92,11 +102,19 @@ const posts = (await getCollection('blog')).sort(
 			<section>
 				<ul>
 					{
-						posts.map((post) => (
+						posts.map((post, index) => (
 							<li>
 								<a href={`/blog/${post.id}/`}>
 									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
+										<Image
+											width={720}
+											height={360}
+											src={post.data.heroImage}
+											alt=""
+											loading={index === 0 ? 'eager' : 'lazy'}
+											decoding="async"
+											fetchpriority={index === 0 ? 'high' : 'auto'}
+										/>
 									)}
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
