@@ -1,7 +1,5 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
@@ -9,30 +7,488 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 <html lang="en">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style is:global>
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+      :root{
+        --bg:#07070f;--bg-card:#101020;--bg-card-hover:#141428;
+        --border:rgba(255,255,255,0.06);--border-mid:rgba(255,255,255,0.1);
+        --gold:#c9923a;--gold-light:#e8b46a;--teal:#3ecfbe;--purple:#8b6fff;
+        --text:#ddddef;--text-muted:#55557a;--text-mid:#8888b8;
+        --font-display:'Cinzel',serif;--font-body:'Outfit',sans-serif;--font-mono:'JetBrains Mono',monospace;
+      }
+      html{scroll-behavior:smooth;}
+      body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.7;min-height:100vh;overflow-x:hidden;}
+      #bg-canvas{position:fixed;inset:0;z-index:0;opacity:0.92;pointer-events:none;}
+      .vignette{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 40%,rgba(7,7,15,0.75) 100%);}
+      .scanlines{position:fixed;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px);opacity:0.4;}
+
+      /* GLITCH */
+      .hero-name{position:relative;}
+      .glitch-wrap{position:relative;display:inline-block;}
+      .glitch-wrap::before,.glitch-wrap::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;font-family:var(--font-display);font-size:inherit;font-weight:inherit;line-height:inherit;letter-spacing:inherit;opacity:0;pointer-events:none;}
+      .glitch-wrap::before{color:#3ecfbe;text-shadow:2px 0 #3ecfbe;}
+      .glitch-wrap::after{color:#8b6fff;text-shadow:-2px 0 #8b6fff;}
+      .glitch-wrap.glitching::before{opacity:0.85;animation:glitch-clip-1 0.4s steps(1) forwards;}
+      .glitch-wrap.glitching::after{opacity:0.75;animation:glitch-clip-2 0.4s steps(1) forwards;}
+      .glitch-wrap.glitching{animation:glitch-shake 0.4s steps(1) forwards;}
+      @keyframes glitch-shake{0%{transform:translate(0);}10%{transform:translate(-3px,1px);}20%{transform:translate(3px,-1px);color:#3ecfbe;}30%{transform:translate(-2px,2px);color:#e8b46a;}40%{transform:translate(2px,-2px);}50%{transform:translate(-3px,0);color:#8b6fff;}60%{transform:translate(3px,1px);color:#3ecfbe;}70%{transform:translate(-1px,-1px);}80%{transform:translate(1px,2px);color:var(--text);}90%{transform:translate(-2px,-1px);}100%{transform:translate(0);color:var(--text);}}
+      @keyframes glitch-clip-1{0%{clip-path:inset(40% 0 50% 0);transform:translate(-4px);}20%{clip-path:inset(10% 0 80% 0);transform:translate(4px);}40%{clip-path:inset(70% 0 10% 0);transform:translate(-3px);}60%{clip-path:inset(20% 0 60% 0);transform:translate(3px);}80%{clip-path:inset(55% 0 30% 0);transform:translate(-2px);}100%{clip-path:inset(0 0 100% 0);transform:translate(0);}}
+      @keyframes glitch-clip-2{0%{clip-path:inset(60% 0 30% 0);transform:translate(4px);}20%{clip-path:inset(80% 0 5% 0);transform:translate(-4px);}40%{clip-path:inset(5% 0 75% 0);transform:translate(3px);}60%{clip-path:inset(45% 0 40% 0);transform:translate(-3px);}80%{clip-path:inset(25% 0 60% 0);transform:translate(2px);}100%{clip-path:inset(0 0 100% 0);transform:translate(0);}}
+
+      /* NAV */
+      nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid var(--border);background:rgba(7,7,15,0.82);backdrop-filter:blur(16px);}
+      .nav-logo{font-family:var(--font-display);font-size:0.82rem;font-weight:600;letter-spacing:0.14em;color:var(--text);text-decoration:none;text-transform:uppercase;}
+      .nav-logo span{color:var(--gold-light);}
+      .nav-links{display:flex;gap:2.5rem;list-style:none;}
+      .nav-links a{font-size:0.78rem;font-weight:500;letter-spacing:0.1em;color:var(--text-mid);text-decoration:none;text-transform:uppercase;transition:color 0.2s;position:relative;}
+      .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold-light);transform:scaleX(0);transition:transform 0.2s;transform-origin:left;}
+      .nav-links a:hover{color:var(--text);}
+      .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+      .nav-links a.active{color:var(--text);}
+
+      /* HERO */
+      .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8rem 3rem 5rem;position:relative;z-index:1;}
+      .hero-eyebrow{font-family:var(--font-mono);font-size:0.72rem;color:var(--gold);letter-spacing:0.22em;text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:fadeUp 0.6s ease forwards 0.2s;}
+      .hero-name{font-family:var(--font-display);font-size:clamp(3.2rem,8vw,7.5rem);font-weight:700;line-height:1.0;letter-spacing:0.02em;color:var(--text);margin-bottom:0.3rem;opacity:0;animation:fadeUp 0.7s ease forwards 0.4s;}
+      .hero-alias{font-family:var(--font-display);font-size:clamp(1rem,2.5vw,1.9rem);font-weight:400;color:var(--gold);letter-spacing:0.18em;margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.7s ease forwards 0.55s;}
+      .hero-desc{font-size:1rem;color:var(--text-mid);max-width:500px;line-height:1.85;margin-bottom:3rem;opacity:0;animation:fadeUp 0.7s ease forwards 0.7s;}
+      .hero-desc strong{color:var(--text);font-weight:500;}
+      .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s ease forwards 0.85s;}
+      .hero-tags{display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:2rem;opacity:0;animation:fadeUp 0.6s ease forwards 1s;}
+      .tag{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border-mid);border-radius:2px;color:var(--text-muted);}
+
+      /* ALIEN */
+      .hero-astronaut{position:absolute;right:3rem;top:50%;transform:translateY(-50%);width:260px;height:320px;opacity:0;animation:fadeIn 1.5s ease forwards 1.2s;pointer-events:none;filter:drop-shadow(0 8px 32px rgba(62,207,190,0.12)) drop-shadow(0 0 60px rgba(139,111,255,0.08));}
+      .astronaut-float{animation:astroFloat 5s ease-in-out infinite;}
+      .astronaut-arm-l{animation:armWave 3.5s ease-in-out infinite;transform-origin:88px 162px;}
+      .astronaut-arm-r{animation:armDrift 6s ease-in-out infinite 0.8s;transform-origin:174px 170px;}
+      .astronaut-bubble{animation:bubblePulse 3s ease-in-out infinite;}
+      @keyframes astroFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-16px) rotate(2deg);}}
+      @keyframes armWave{0%,100%{transform:rotate(0deg);}25%{transform:rotate(-12deg);}50%{transform:rotate(6deg);}75%{transform:rotate(-8deg);}}
+      @keyframes armDrift{0%,100%{transform:rotate(0deg);}40%{transform:rotate(-10deg);}70%{transform:rotate(5deg);}}
+      @keyframes bubblePulse{0%,100%{opacity:0.85;transform:scale(1);}50%{opacity:1;transform:scale(1.04);}}
+
+      /* BUTTONS */
+      .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.75rem;font-family:var(--font-body);font-size:0.83rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all 0.2s;cursor:pointer;border:none;}
+      .btn-primary{background:var(--gold);color:#07070f;border:1px solid var(--gold);}
+      .btn-primary:hover{background:transparent;color:var(--gold);}
+      .btn-ghost{background:transparent;color:var(--text-mid);border:1px solid var(--border-mid);}
+      .btn-ghost:hover{border-color:var(--text-mid);color:var(--text);}
+
+      /* DIVIDER */
+      .divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--border-mid) 20%,var(--border-mid) 80%,transparent);position:relative;z-index:1;}
+
+      /* SECTIONS */
+      section{padding:5rem 3rem;position:relative;z-index:1;}
+      .section-label{font-family:var(--font-mono);font-size:0.68rem;color:var(--gold);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:0.4rem;}
+      .section-title{font-family:var(--font-display);font-size:clamp(1.4rem,3vw,2.1rem);font-weight:600;color:var(--text);margin-bottom:0.6rem;letter-spacing:0.04em;}
+      .section-sub{font-size:0.92rem;color:var(--text-muted);max-width:480px;margin-bottom:3rem;line-height:1.7;}
+      .section-geo{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;}
+      .section-geo-visual{display:flex;align-items:center;justify-content:center;opacity:0.12;padding-top:1rem;}
+
+      /* PROJECTS */
+      .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;}
+      .project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:1.75rem;transition:all 0.25s ease;position:relative;overflow:hidden;text-decoration:none;color:inherit;display:block;}
+      .project-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--card-accent,var(--gold));opacity:0;transition:opacity 0.25s;}
+      .project-card:hover{background:var(--bg-card-hover);border-color:rgba(201,146,58,0.2);transform:translateY(-2px);}
+      .project-card:hover::before{opacity:1;}
+      .card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;}
+      .card-icon{font-size:1.4rem;margin-bottom:0.85rem;display:block;}
+      .card-tag{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:3px 8px;border-radius:2px;background:rgba(255,255,255,0.04);color:var(--text-muted);}
+      .card-status{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px;}
+      .status-active{background:rgba(62,207,190,0.07);color:var(--teal);border:1px solid rgba(62,207,190,0.18);}
+      .status-wip{background:rgba(201,146,58,0.07);color:var(--gold-light);border:1px solid rgba(201,146,58,0.18);}
+      .status-learning{background:rgba(139,111,255,0.07);color:var(--purple);border:1px solid rgba(139,111,255,0.18);}
+      .card-title{font-family:var(--font-display);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.55rem;letter-spacing:0.04em;}
+      .card-desc{font-size:0.84rem;color:var(--text-muted);line-height:1.65;}
+
+      /* NOW */
+      .now-layout{display:grid;grid-template-columns:1fr 280px;gap:3rem;align-items:start;}
+      .now-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+      .now-item{background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:1.4rem;}
+      .now-item-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.55rem;}
+      .now-item-title{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.3rem;}
+      .now-item-desc{font-size:0.79rem;color:var(--text-muted);line-height:1.6;}
+      .now-geo-aside{display:flex;flex-direction:column;align-items:center;gap:1.5rem;padding-top:0.5rem;}
+      .now-geo-aside svg{opacity:0.1;}
+      .skills-strip{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:2rem;}
+      .skill-pill{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:5px 10px;border:1px solid var(--border-mid);border-radius:2px;color:var(--text-mid);transition:all 0.2s;}
+      .skill-pill:hover{border-color:var(--gold);color:var(--gold-light);}
+
+      /* CURSOR TRAIL */
+      .cursor-dot{position:fixed;pointer-events:none;border-radius:50%;z-index:9999;transform:translate(-50%,-50%);transition:opacity 0.4s ease;}
+
+      /* FOOTER */
+      footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;position:relative;z-index:1;}
+      .footer-copy{font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);letter-spacing:0.06em;}
+      .footer-links{display:flex;gap:1.75rem;list-style:none;}
+      .footer-links a{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+      .footer-links a:hover{color:var(--gold-light);}
+
+      /* ANIMATIONS */
+      @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+      @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+      .reveal{opacity:0;transform:translateY(14px);transition:opacity 0.65s ease,transform 0.65s ease;}
+      .reveal.visible{opacity:1;transform:none;}
+      .d1{transition-delay:0.1s;}.d2{transition-delay:0.2s;}.d3{transition-delay:0.3s;}
+
+      /* RESPONSIVE */
+      @media(max-width:1100px){.now-layout{grid-template-columns:1fr;}.now-geo-aside{display:none;}}
+      @media(max-width:900px){.section-geo{display:block;}.section-geo-visual{display:none;}.hero-astronaut{display:none;}}
+      @media(max-width:768px){nav{padding:1rem 1.5rem;}section,.hero{padding-left:1.5rem;padding-right:1.5rem;}.hero{padding-top:7rem;padding-bottom:4rem;}.projects-grid,.now-grid{grid-template-columns:1fr;}footer{padding:2rem 1.5rem;flex-direction:column;align-items:flex-start;}}
+    </style>
   </head>
+
   <body>
-    <Header />
-    <main>
-      <!-- Intro -->
-      <section>
-        <h1>The I2KGhost Protocol</h1>
-        <p>
-          Hey, you made it. This is <em>The I2KGhost Protocol</em> — my no-fluff corner of the internet.
-          I’m Ivaylo (aka <strong>I2KGhost</strong>), and this place is for the curious ones.
-        </p>
-        <p>
-          Geeks and nerds who like to tinker with electronics, automate the boring stuff, poke at AI models,
-          and occasionally break things just to see what happens — you’re home.
-        </p>
-        <p>
-          And yes, fantasy fans — you’re part of the crew, too. Myth-soaked worlds, dragons, and creative experiments
-          are very much on the menu.
-        </p>
-        <p>
-          Want the full story and all the side quests? Head over to the <a href="/about">About</a> page.
-        </p>
-      </section>
-    </main>
-    <Footer />
+    <canvas id="bg-canvas"></canvas>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+      <a href="/" class="nav-logo">Ivaylo <span>Kolev</span></a>
+      <ul class="nav-links">
+        <li><a href="/" class="active">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <!-- floating alien -->
+      <div class="hero-astronaut" aria-hidden="true">
+        <svg class="astronaut-float" viewBox="0 0 260 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="bodyGrad" cx="38%" cy="30%" r="65%">
+              <stop offset="0%" stop-color="#2a4a3a"/>
+              <stop offset="100%" stop-color="#0e1f18"/>
+            </radialGradient>
+            <radialGradient id="headGrad" cx="35%" cy="28%" r="65%">
+              <stop offset="0%" stop-color="#2e5442"/>
+              <stop offset="100%" stop-color="#0e2018"/>
+            </radialGradient>
+            <radialGradient id="eyeGlowL" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#7fffee"/>
+              <stop offset="50%" stop-color="#3ecfbe"/>
+              <stop offset="100%" stop-color="#0a6060"/>
+            </radialGradient>
+            <radialGradient id="eyeGlowR" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#c8aaff"/>
+              <stop offset="50%" stop-color="#8b6fff"/>
+              <stop offset="100%" stop-color="#3a1a8a"/>
+            </radialGradient>
+            <filter id="eyeBloom" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="bodyGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="6" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <ellipse cx="128" cy="148" rx="70" ry="90" fill="rgba(62,207,190,0.03)" filter="url(#bodyGlow)"/>
+          <line x1="128" y1="46" x2="140" y2="18" stroke="#1a1a2e" stroke-width="3" stroke-linecap="round"/>
+          <line x1="128" y1="46" x2="140" y2="18" stroke="#3ecfbe" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="140" cy="15" r="7" fill="#0d0d22" stroke="#c9923a" stroke-width="2"/>
+          <circle cx="140" cy="15" r="4" fill="#c9923a" opacity="0.9"/>
+          <circle cx="138" cy="13" r="1.5" fill="rgba(255,255,255,0.6)"/>
+          <circle cx="140" cy="15" r="10" fill="none" stroke="#c9923a" stroke-width="0.8" opacity="0.4" stroke-dasharray="3 3"/>
+          <ellipse cx="132" cy="110" rx="56" ry="68" fill="rgba(0,0,0,0.25)"/>
+          <ellipse cx="128" cy="106" rx="56" ry="68" fill="url(#headGrad)" stroke="#1a2e22" stroke-width="2.5"/>
+          <ellipse cx="112" cy="80" rx="22" ry="16" fill="rgba(62,207,190,0.08)" transform="rotate(-15 112 80)"/>
+          <ellipse cx="72" cy="108" rx="10" ry="18" fill="url(#headGrad)" stroke="#1a2e22" stroke-width="2"/>
+          <ellipse cx="184" cy="108" rx="10" ry="18" fill="url(#headGrad)" stroke="#1a2e22" stroke-width="2"/>
+          <ellipse cx="72" cy="108" rx="5" ry="10" fill="rgba(62,207,190,0.07)"/>
+          <ellipse cx="184" cy="108" rx="5" ry="10" fill="rgba(139,111,255,0.07)"/>
+          <ellipse cx="106" cy="100" rx="22" ry="18" fill="#060e0a" stroke="#1a2e22" stroke-width="1.5"/>
+          <ellipse cx="152" cy="100" rx="22" ry="18" fill="#060e0a" stroke="#1a2e22" stroke-width="1.5"/>
+          <ellipse cx="106" cy="100" rx="17" ry="13" fill="url(#eyeGlowL)" filter="url(#eyeBloom)"/>
+          <ellipse cx="152" cy="100" rx="17" ry="13" fill="url(#eyeGlowR)" filter="url(#eyeBloom)"/>
+          <ellipse cx="108" cy="102" rx="7" ry="9" fill="#001a18"/>
+          <ellipse cx="154" cy="102" rx="7" ry="9" fill="#0d0028"/>
+          <circle cx="104" cy="96" r="3.5" fill="rgba(255,255,255,0.35)"/>
+          <circle cx="150" cy="96" r="3.5" fill="rgba(255,255,255,0.3)"/>
+          <circle cx="111" cy="105" r="1.5" fill="rgba(255,255,255,0.15)"/>
+          <circle cx="157" cy="105" r="1.5" fill="rgba(255,255,255,0.15)"/>
+          <ellipse cx="125" cy="135" rx="5" ry="3" fill="rgba(0,0,0,0.4)"/>
+          <ellipse cx="133" cy="135" rx="5" ry="3" fill="rgba(0,0,0,0.4)"/>
+          <path d="M112 150 Q129 158 148 150" stroke="#1a2e22" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M112 150 Q129 157 148 150" stroke="rgba(62,207,190,0.3)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <rect x="114" y="168" width="28" height="18" rx="8" fill="url(#bodyGrad)" stroke="#1a2e22" stroke-width="2"/>
+          <ellipse cx="128" cy="218" rx="34" ry="42" fill="url(#bodyGrad)" stroke="#1a2e22" stroke-width="2.5"/>
+          <ellipse cx="118" cy="200" rx="14" ry="20" fill="rgba(62,207,190,0.06)" transform="rotate(-10 118 200)"/>
+          <line x1="128" y1="188" x2="128" y2="252" stroke="rgba(62,207,190,0.12)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <rect x="112" y="205" width="32" height="22" rx="5" fill="#060e0a" stroke="rgba(62,207,190,0.4)" stroke-width="1.2"/>
+          <rect x="115" y="208" width="12" height="6" rx="2" fill="#c9923a" opacity="0.8"/>
+          <rect x="115" y="217" width="12" height="6" rx="2" fill="#3ecfbe" opacity="0.7"/>
+          <circle cx="134" cy="212" r="3.5" fill="#8b6fff" opacity="0.9"/>
+          <circle cx="134" cy="221" r="3.5" fill="#3ecfbe" opacity="0.7"/>
+          <g class="astronaut-arm-l">
+            <path d="M96 192 Q72 172 56 148" stroke="#1a2e22" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path d="M96 192 Q72 172 56 148" stroke="url(#bodyGrad)" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <ellipse cx="52" cy="142" rx="14" ry="12" fill="url(#headGrad)" stroke="#1a2e22" stroke-width="2"/>
+            <path d="M43 136 Q38 124 40 116" stroke="#1a2e22" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <path d="M43 136 Q39 125 41 117" stroke="url(#bodyGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M51 132 Q48 120 50 112" stroke="#1a2e22" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <path d="M51 132 Q49 121 51 113" stroke="url(#bodyGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M59 133 Q59 121 61 113" stroke="#1a2e22" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <path d="M59 133 Q60 122 62 114" stroke="url(#bodyGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M65 138 Q68 127 68 119" stroke="#1a2e22" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <circle cx="40" cy="115" r="3" fill="#3ecfbe" opacity="0.7"/>
+            <circle cx="50" cy="111" r="3" fill="#3ecfbe" opacity="0.6"/>
+            <circle cx="61" cy="112" r="3" fill="#8b6fff" opacity="0.6"/>
+          </g>
+          <g class="astronaut-arm-r">
+            <path d="M160 192 Q182 198 196 218" stroke="#1a2e22" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path d="M160 192 Q182 198 196 218" stroke="url(#bodyGrad)" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <ellipse cx="200" cy="224" rx="14" ry="12" fill="url(#headGrad)" stroke="#1a2e22" stroke-width="2" transform="rotate(20 200 224)"/>
+            <path d="M194 232 Q192 244 194 252" stroke="#1a2e22" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <path d="M202 234 Q202 246 204 254" stroke="#1a2e22" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <path d="M209 230 Q212 242 212 250" stroke="#1a2e22" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <path d="M213 224 Q218 234 217 242" stroke="#1a2e22" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <circle cx="194" cy="253" r="2.5" fill="#c9923a" opacity="0.6"/>
+            <circle cx="204" cy="255" r="2.5" fill="#c9923a" opacity="0.5"/>
+          </g>
+          <path d="M112 256 Q100 272 88 288" stroke="#1a2e22" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <path d="M112 256 Q100 272 88 288" stroke="url(#bodyGrad)" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <ellipse cx="84" cy="292" rx="14" ry="8" fill="url(#headGrad)" stroke="#1a2e22" stroke-width="2" transform="rotate(-20 84 292)"/>
+          <path d="M144 256 Q154 274 162 290" stroke="#1a2e22" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <path d="M144 256 Q154 274 162 290" stroke="url(#bodyGrad)" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <ellipse cx="165" cy="293" rx="14" ry="8" fill="url(#headGrad)" stroke="#1a2e22" stroke-width="2" transform="rotate(15 165 293)"/>
+          <ellipse cx="128" cy="302" rx="40" ry="6" fill="rgba(62,207,190,0.12)" filter="url(#bodyGlow)"/>
+          <g class="astronaut-bubble">
+            <rect x="170" y="20" width="82" height="50" rx="10" fill="#0a0a1e" stroke="#c9923a" stroke-width="2"/>
+            <rect x="172" y="22" width="78" height="46" rx="8" fill="#0d0d28"/>
+            <path d="M178 70 L164 84 L195 70Z" fill="#0a0a1e" stroke="#c9923a" stroke-width="2" stroke-linejoin="round"/>
+            <text x="211" y="44" font-family="'JetBrains Mono',monospace" font-size="9.5" font-weight="500" fill="#c9923a" text-anchor="middle">01001000</text>
+            <text x="211" y="58" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#3ecfbe" text-anchor="middle">01101001</text>
+          </g>
+          <circle cx="22" cy="55" r="1.5" fill="white" opacity="0.35"/>
+          <circle cx="18" cy="160" r="1" fill="white" opacity="0.25"/>
+          <circle cx="238" cy="130" r="1.5" fill="white" opacity="0.3"/>
+          <circle cx="244" cy="230" r="1" fill="white" opacity="0.2"/>
+          <circle cx="35" cy="290" r="1.2" fill="white" opacity="0.2"/>
+          <circle cx="200" cy="40" r="1" fill="#3ecfbe" opacity="0.4"/>
+          <circle cx="30" cy="200" r="1" fill="#8b6fff" opacity="0.35"/>
+        </svg>
+      </div>
+
+      <p class="hero-eyebrow">// Builder · Automator · Worldbuilder</p>
+      <h1 class="hero-name">
+        <span class="glitch-wrap" data-text="Ivaylo">Ivaylo</span><br />
+        <span class="glitch-wrap" data-text="Kolev">Kolev</span>
+      </h1>
+      <p class="hero-alias">aka I2KGhost</p>
+      <p class="hero-desc">
+        I build things at the intersection of <strong>AI automation</strong>, <strong>security research</strong>, and <strong>creative worldbuilding</strong>. Based in London. Always learning, always shipping.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="/about" class="btn btn-ghost">About Me</a>
+      </div>
+      <div class="hero-tags">
+        <span class="tag">Python</span>
+        <span class="tag">AI / ML</span>
+        <span class="tag">Automation</span>
+        <span class="tag">AI Security</span>
+        <span class="tag">AWS</span>
+        <span class="tag">n8n</span>
+        <span class="tag">Astro</span>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="projects">
+      <div class="section-geo">
+        <div>
+          <div class="reveal">
+            <p class="section-label">// What I'm building</p>
+            <h2 class="section-title">Projects</h2>
+            <p class="section-sub">Active work, experiments, and things cooking in the background.</p>
+          </div>
+          <div class="projects-grid">
+            <a href="#" class="project-card reveal" style="--card-accent:#c9923a;">
+              <div class="card-top"><span class="card-tag">Automation · Web</span><span class="card-status status-active">Active</span></div>
+              <span class="card-icon">🤖</span>
+              <h3 class="card-title">AI Agency — UK SMBs</h3>
+              <p class="card-desc">Building AI automation solutions for small UK businesses — accounting firms, legal, dental practices, estate agents. Bespoke pipelines using n8n and Make.com.</p>
+            </a>
+            <a href="#" class="project-card reveal d1" style="--card-accent:#3ecfbe;">
+              <div class="card-top"><span class="card-tag">Civic Tech · Web</span><span class="card-status status-active">Active</span></div>
+              <span class="card-icon">🌱</span>
+              <h3 class="card-title">UK Farmers Funding</h3>
+              <p class="card-desc">A resource hub helping British farmers navigate government funding schemes and grants — cutting through bureaucratic noise with clear, accessible information.</p>
+            </a>
+            <a href="#" class="project-card reveal d2" style="--card-accent:#8b6fff;">
+              <div class="card-top"><span class="card-tag">Creative Universe</span><span class="card-status status-active">Active</span></div>
+              <span class="card-icon">🐉</span>
+              <h3 class="card-title">Drekoria</h3>
+              <p class="card-desc">A nature-inspired fantasy universe with its own lore, history, and characters. Home to the Chronicles of Drekoria podcast and The Voice of Drekoria.</p>
+            </a>
+            <a href="https://tryhackme.com" target="_blank" class="project-card reveal" style="--card-accent:#3ecfbe;">
+              <div class="card-top"><span class="card-tag">Security · Learning</span><span class="card-status status-learning">In Progress</span></div>
+              <span class="card-icon">🔐</span>
+              <h3 class="card-title">AI Security Learning Path</h3>
+              <p class="card-desc">TryHackMe's AI Security path — covering threat modelling, prompt injection defence, LLM vulnerabilities, and responsible AI deployment in production environments.</p>
+            </a>
+            <a href="https://aws.amazon.com/about-aws/our-impact/scholars/" target="_blank" class="project-card reveal d1" style="--card-accent:#c9923a;">
+              <div class="card-top"><span class="card-tag">AI / ML · Scholarship</span><span class="card-status status-learning">In Progress</span></div>
+              <span class="card-icon">☁️</span>
+              <h3 class="card-title">AWS AI & ML Scholars</h3>
+              <p class="card-desc">AWS + Udacity program for 100,000 learners globally. Challenge phase: AI fundamentals with hands-on work in Amazon Bedrock and PartyRock. Deadline: June 24, 2026.</p>
+            </a>
+            <a href="#" class="project-card reveal d2" style="--card-accent:#55557a;">
+              <div class="card-top"><span class="card-tag">Privacy · Infrastructure</span><span class="card-status status-wip">Ongoing</span></div>
+              <span class="card-icon">🛡️</span>
+              <h3 class="card-title">Privacy-First Stack</h3>
+              <p class="card-desc">De-Googled digital ecosystem: ProtonMail, ProtonDrive, Brave, DuckDuckGo. Documenting the setup, trade-offs, and tools along the way.</p>
+            </a>
+          </div>
+        </div>
+        <div class="section-geo-visual" aria-hidden="true">
+          <svg width="180" height="500" viewBox="0 0 180 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="20" width="60" height="60" stroke="#c9923a" stroke-width="1"/>
+            <rect x="100" y="20" width="60" height="60" stroke="#c9923a" stroke-width="1"/>
+            <rect x="20" y="100" width="60" height="60" stroke="#c9923a" stroke-width="1"/>
+            <rect x="100" y="100" width="60" height="60" stroke="#c9923a" stroke-width="1"/>
+            <rect x="20" y="180" width="60" height="60" stroke="#3ecfbe" stroke-width="0.7"/>
+            <rect x="100" y="180" width="60" height="60" stroke="#3ecfbe" stroke-width="0.7"/>
+            <rect x="20" y="260" width="60" height="60" stroke="#3ecfbe" stroke-width="0.5"/>
+            <rect x="100" y="260" width="60" height="60" stroke="#3ecfbe" stroke-width="0.5"/>
+            <rect x="20" y="340" width="60" height="60" stroke="#8b6fff" stroke-width="0.4"/>
+            <rect x="100" y="340" width="60" height="60" stroke="#8b6fff" stroke-width="0.4"/>
+            <rect x="20" y="420" width="60" height="60" stroke="#8b6fff" stroke-width="0.25"/>
+            <rect x="100" y="420" width="60" height="60" stroke="#8b6fff" stroke-width="0.25"/>
+            <rect x="35" y="35" width="30" height="30" stroke="#c9923a" stroke-width="0.4"/>
+            <rect x="115" y="115" width="30" height="30" stroke="#c9923a" stroke-width="0.4"/>
+            <rect x="35" y="195" width="30" height="30" stroke="#3ecfbe" stroke-width="0.3"/>
+            <rect x="115" y="275" width="30" height="30" stroke="#3ecfbe" stroke-width="0.3"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="now">
+      <div class="now-layout">
+        <div>
+          <div class="reveal">
+            <p class="section-label">// April 2026</p>
+            <h2 class="section-title">What I'm Doing Now</h2>
+            <p class="section-sub">A living snapshot. Updated monthly.</p>
+          </div>
+          <div class="now-grid">
+            <div class="now-item reveal">
+              <p class="now-item-label">Building</p>
+              <p class="now-item-title">AI Agency Pipeline</p>
+              <p class="now-item-desc">Mapping out the first client verticals — targeting UK accounting and legal SMBs with no-code automation demos.</p>
+            </div>
+            <div class="now-item reveal d1">
+              <p class="now-item-label">Learning</p>
+              <p class="now-item-title">AWS AI & ML Scholars</p>
+              <p class="now-item-desc">Challenge phase active. Building a generative AI app in Amazon PartyRock. Targeting top 4,500 for the Udacity Nanodegree.</p>
+            </div>
+            <div class="now-item reveal d2">
+              <p class="now-item-label">Learning</p>
+              <p class="now-item-title">AI Security — TryHackMe</p>
+              <p class="now-item-desc">Working through prompt injection, LLM red-teaming, and AI threat modelling modules.</p>
+            </div>
+            <div class="now-item reveal d3">
+              <p class="now-item-label">Creating</p>
+              <p class="now-item-title">Drekoria Universe</p>
+              <p class="now-item-desc">Developing lore, characters, and the Chronicles of Drekoria podcast. Long-term world-building project.</p>
+            </div>
+          </div>
+          <div class="skills-strip reveal">
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">n8n</span>
+            <span class="skill-pill">Make.com</span>
+            <span class="skill-pill">AWS Bedrock</span>
+            <span class="skill-pill">Astro</span>
+            <span class="skill-pill">Prompt Engineering</span>
+            <span class="skill-pill">LLM Security</span>
+            <span class="skill-pill">Automation</span>
+          </div>
+        </div>
+        <div class="now-geo-aside" aria-hidden="true">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="100,10 185,55 185,145 100,190 15,145 15,55" stroke="#3ecfbe" stroke-width="1.2"/>
+            <polygon points="100,30 168,68 168,132 100,170 32,132 32,68" stroke="#3ecfbe" stroke-width="0.7"/>
+            <polygon points="100,52 150,80 150,120 100,148 50,120 50,80" stroke="#3ecfbe" stroke-width="0.4"/>
+            <circle cx="100" cy="100" r="25" stroke="#c9923a" stroke-width="0.8"/>
+            <line x1="100" y1="10" x2="100" y2="190" stroke="#3ecfbe" stroke-width="0.35" stroke-dasharray="3 7"/>
+            <line x1="15" y1="100" x2="185" y2="100" stroke="#3ecfbe" stroke-width="0.35" stroke-dasharray="3 7"/>
+            <circle cx="100" cy="100" r="3" fill="#c9923a" fill-opacity="0.8"/>
+          </svg>
+          <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="60" height="60" stroke="#8b6fff" stroke-width="1"/>
+            <rect x="90" y="10" width="60" height="60" stroke="#8b6fff" stroke-width="1"/>
+            <rect x="10" y="90" width="60" height="60" stroke="#8b6fff" stroke-width="1"/>
+            <rect x="90" y="90" width="60" height="60" stroke="#8b6fff" stroke-width="1"/>
+            <rect x="25" y="25" width="30" height="30" stroke="#8b6fff" stroke-width="0.4"/>
+            <rect x="105" y="105" width="30" height="30" stroke="#8b6fff" stroke-width="0.4"/>
+            <line x1="70" y1="40" x2="90" y2="40" stroke="#8b6fff" stroke-width="0.5" stroke-dasharray="2 4"/>
+            <line x1="80" y1="70" x2="80" y2="90" stroke="#8b6fff" stroke-width="0.5" stroke-dasharray="2 4"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <footer>
+      <p class="footer-copy">© 2026 Ivaylo Kolev. All rights reserved.</p>
+      <ul class="footer-links">
+        <li><a href="#" target="_blank">YouTube</a></li>
+        <li><a href="#" target="_blank">Instagram</a></li>
+        <li><a href="#" target="_blank">Patreon</a></li>
+        <li><a href="#" target="_blank">GitHub</a></li>
+      </ul>
+    </footer>
+
+    <script>
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+      const COLORS = ['rgba(201,146,58,','rgba(62,207,190,','rgba(139,111,255,'];
+      function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+      function Particle(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-0.5)*0.22;this.vy=(Math.random()-0.5)*0.22;this.r=Math.random()*2+0.6;this.color=COLORS[Math.floor(Math.random()*3)];this.alpha=Math.random()*0.55+0.2;}
+      function init(){resize();particles=[];const c=Math.floor(W*H/9000);for(let i=0;i<c;i++)particles.push(new Particle());}
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        particles.forEach(p=>{
+          p.x+=p.vx;p.y+=p.vy;
+          if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+          if(p.r>1.8){ctx.beginPath();ctx.arc(p.x,p.y,p.r*2.5,0,Math.PI*2);ctx.fillStyle=p.color+(p.alpha*0.12)+')';ctx.fill();}
+          ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color+p.alpha+')';ctx.fill();
+        });
+        for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;const d=Math.sqrt(dx*dx+dy*dy);if(d<140){const a=0.14*(1-d/140);ctx.beginPath();ctx.strokeStyle='rgba(201,146,58,'+a+')';ctx.lineWidth=0.6;ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.stroke();}}}
+        requestAnimationFrame(draw);
+      }
+      window.addEventListener('resize',init);init();draw();
+
+      const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.08});
+      document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+
+      // CURSOR TRAIL
+      (function(){
+        const TRAIL=8,dots=[],mouse={x:0,y:0};
+        const positions=Array.from({length:TRAIL},()=>({x:0,y:0}));
+        for(let i=0;i<TRAIL;i++){const d=document.createElement('div');d.className='cursor-dot';const size=4-i*0.35;const colors=['rgba(62,207,190,','rgba(201,146,58,','rgba(139,111,255,'];const col=colors[i%colors.length];d.style.cssText=`width:${size}px;height:${size}px;background:${col}${0.5-i*0.055});`;document.body.appendChild(d);dots.push(d);}
+        window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+        function animate(){positions[0]={x:mouse.x,y:mouse.y};for(let i=1;i<TRAIL;i++){positions[i]={x:positions[i].x+(positions[i-1].x-positions[i].x)*0.35,y:positions[i].y+(positions[i-1].y-positions[i].y)*0.35};}dots.forEach((d,i)=>{d.style.left=positions[i].x+'px';d.style.top=positions[i].y+'px';});requestAnimationFrame(animate);}
+        animate();
+      })();
+
+      // GLITCH
+      const glitchTargets=document.querySelectorAll('.glitch-wrap');
+      function triggerGlitch(){const doBoth=Math.random()>0.4;const targets=doBoth?glitchTargets:[glitchTargets[Math.floor(Math.random()*glitchTargets.length)]];targets.forEach(el=>{el.classList.add('glitching');setTimeout(()=>el.classList.remove('glitching'),420);});setTimeout(triggerGlitch,4000+Math.random()*6000);}
+      setTimeout(triggerGlitch,2500);
+    </script>
   </body>
 </html>
