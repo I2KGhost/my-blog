@@ -1,91 +1,299 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import AboutHeroImage from '../assets/about_drekoria_logo.png'; // смени с правилното разширение
-import Layout from '../layouts/BlogPost.astro';
-
-const pageTitle = "";
-const pageDescription = "Learn more about Ivaylo (I2KGhost) and the Drekoria project.";
 ---
 
-<Layout
-  title={pageTitle}
-  description={pageDescription}
-  pubDate={new Date('16 August 2025')}
-  
->
-  <article class="about-container">
-	<img src={AboutHeroImage.src} alt="Drekoria Logo" class="about-logo" />
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title="About — Ivaylo Kolev" description="About Ivaylo Kolev — who I am, what I build, and where I'm headed." />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style is:global>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#07070f;--bg-card:#101020;--bg-card-hover:#141428;
+  --border:rgba(255,255,255,0.06);--border-mid:rgba(255,255,255,0.1);
+  --gold:#c9923a;--gold-light:#e8b46a;--teal:#3ecfbe;--purple:#8b6fff;
+  --text:#ddddef;--text-muted:#55557a;--text-mid:#8888b8;
+  --font-display:'Cinzel',serif;--font-body:'Outfit',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.7;min-height:100vh;overflow-x:hidden;}
+#bg-canvas{position:fixed;inset:0;z-index:0;opacity:0.5;pointer-events:none;}
 
-    <p>Hey, I’m Ivaylo 👋</p>
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid var(--border);background:rgba(7,7,15,0.82);backdrop-filter:blur(16px);}
+.nav-logo{font-family:var(--font-display);font-size:0.82rem;font-weight:600;letter-spacing:0.14em;color:var(--text);text-decoration:none;text-transform:uppercase;}
+.nav-logo span{color:var(--gold-light);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{font-size:0.78rem;font-weight:500;letter-spacing:0.1em;color:var(--text-mid);text-decoration:none;text-transform:uppercase;transition:color 0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold-light);transform:scaleX(0);transition:transform 0.2s;transform-origin:left;}
+.nav-links a:hover{color:var(--text);}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+.nav-links a.active{color:var(--text);}
 
-    <p>Online, most people know me as I2KGhost.
-    The story behind that name is… well, a journey in itself.</p>
+/* PAGE HEADER */
+.page-header{padding:9rem 3rem 4rem;position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;}
+.header-text{}
+.page-eyebrow{font-family:var(--font-mono);font-size:0.72rem;color:var(--gold);letter-spacing:0.22em;text-transform:uppercase;margin-bottom:1rem;opacity:0;animation:fadeUp 0.6s ease forwards 0.2s;}
+.page-title{font-family:var(--font-display);font-size:clamp(2.5rem,6vw,5rem);font-weight:700;line-height:1.0;color:var(--text);margin-bottom:1.25rem;opacity:0;animation:fadeUp 0.7s ease forwards 0.4s;}
+.page-sub{font-size:1rem;color:var(--text-mid);max-width:500px;line-height:1.8;opacity:0;animation:fadeUp 0.7s ease forwards 0.55s;}
+.header-geo{opacity:0;animation:fadeIn 2s ease forwards 1s;pointer-events:none;}
 
-    <p>Back in my teenage years, I went through a lot of nicknames. At the time, they all sounded cool, but eventually you grow up and realize… maybe they don’t sound that cool anymore. 😂</p>
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--border-mid) 20%,var(--border-mid) 80%,transparent);position:relative;z-index:1;}
 
-    <p>So, I decided to pick something new. My first idea was I2K, basically a shortened version of my own names. It worked fine on most sites, but some platforms didn’t accept nicknames with only three characters. That meant I either had to invent something entirely new or add to what I already had.</p>
+/* ABOUT LAYOUT */
+.about-layout{display:grid;grid-template-columns:1fr 380px;gap:4rem;padding:5rem 3rem;position:relative;z-index:1;align-items:start;}
+.about-main{}
 
-    <p>Since I’ve always liked shadows, ghosts, and mysterious stuff, I added Ghost to the end — keeping I2K but making it longer and more unique. And that’s how I2KGhost was born.</p>
+/* TEXT */
+.about-section{margin-bottom:3rem;}
+.about-section-label{font-family:var(--font-mono);font-size:0.68rem;color:var(--gold);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border);}
+.about-section h2{font-family:var(--font-display);font-size:1.3rem;font-weight:600;color:var(--text);margin-bottom:1rem;letter-spacing:0.04em;}
+.about-section p{font-size:0.95rem;color:var(--text-mid);line-height:1.85;margin-bottom:1rem;}
+.about-section p:last-child{margin-bottom:0;}
+.about-section strong{color:var(--text);font-weight:500;}
 
-    <h2>My path into tech 🖥️</h2>
+/* SIDEBAR */
+.about-sidebar{display:flex;flex-direction:column;gap:1.25rem;}
+.sidebar-card{background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:1.4rem;}
+.sidebar-card-label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.sidebar-list{list-style:none;display:flex;flex-direction:column;gap:0.5rem;}
+.sidebar-list li{font-size:0.84rem;color:var(--text-mid);display:flex;align-items:baseline;gap:0.5rem;}
+.sidebar-list li::before{content:'—';color:var(--text-muted);font-size:0.7rem;flex-shrink:0;}
+.sidebar-list li strong{color:var(--text);font-weight:500;}
 
-    <p>My first real experiments with code go all the way back to 2007–2008, when I joined a college for computer networks. At that time, I wasn’t exactly fascinated — honestly, I had no idea what all those codes were for.</p>
+/* fact items */
+.fact-item{display:flex;flex-direction:column;gap:0.15rem;padding:0.6rem 0;border-bottom:1px solid var(--border);}
+.fact-item:last-child{border-bottom:none;padding-bottom:0;}
+.fact-label{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;}
+.fact-value{font-size:0.85rem;color:var(--text-mid);}
 
-    <p>Much later, I stumbled into programming again when the first private programming university opened in my country. Back then, all their courses were free and open to everyone. That’s when I got hooked — first on Java (mostly because of Android, and I understood almost nothing), then briefly C, C++, C#, and finally Python.</p>
+/* geo in sidebar */
+.sidebar-geo{display:flex;justify-content:center;padding:1.5rem 0;opacity:0.1;}
 
-    <p>Python stuck with me. Even today, I can’t say I know it perfectly, but I can write and understand simple code. Somewhere in between, I also tried my hand at web design.</p>
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.timeline-item{display:grid;grid-template-columns:80px 1fr;gap:1.5rem;position:relative;padding-bottom:2rem;}
+.timeline-item::before{content:'';position:absolute;left:calc(80px + 0.75rem - 0.5px);top:24px;bottom:0;width:1px;background:var(--border);}
+.timeline-item:last-child::before{display:none;}
+.timeline-year{font-family:var(--font-mono);font-size:0.68rem;color:var(--gold);letter-spacing:0.1em;padding-top:4px;}
+.timeline-content{}
+.timeline-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);position:absolute;left:calc(80px + 0.75rem - 4px);top:5px;}
+.timeline-title{font-size:0.92rem;font-weight:500;color:var(--text);margin-bottom:0.25rem;}
+.timeline-desc{font-size:0.82rem;color:var(--text-muted);line-height:1.6;}
 
-    <h2>From code to fantasy worlds 📚🐉</h2>
+footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;position:relative;z-index:1;}
+.footer-copy{font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);letter-spacing:0.06em;}
+.footer-links{display:flex;gap:1.75rem;list-style:none;}
+.footer-links a{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:var(--gold-light);}
 
-    <p>After my programming adventures, I got the idea to write a fantasy novel. Around that time, Game of Thrones had just come out, and I thought, “I’ll be the next George R.R. Martin.”
-    The working title was The Night of the Raven (yes, Gothic fans will get the reference 😅).</p>
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.visible{opacity:1;transform:none;}
 
-    <p>That book idea stayed with me for years — and still does — but with a new name: Drekoria. Funny enough, Drekoria started as the name of an empire in the story, but eventually became the name of the entire project.</p>
-
-    <h2>The Drekoria Universe 🎙️</h2>
-
-    <p>Today, Drekoria is a multi-project brand:</p>
-
-    <ul>
-      <li>🌌 <b>Drekoria</b> – where myths inspire the future. A nature-inspired fantasy world full of lore, characters, and history.</li>
-      <li>🎧 <b>Chronicles of Drekoria Podcast</b> – for artists, writers, and creators. Tips, tricks, creative discussions, and inspiring stories.</li>
-      <li>⚡ <b>The Voice of Drekoria</b> – tech-focused podcast about AI, robotics, and programming.</li>
-      <li>📷 <b>Drekoria Tech</b> – Instagram branch of The Voice of Drekoria, sharing tools, experiments, and AI creations.</li>
-    </ul>
-
-    <p>And because I love building things, I’m also working on an Etsy store that combines both the creative and tech sides of Drekoria with unique products.</p>
-
-    <h2>5 Random Facts About Me</h2>
-    <ul>
-      <li><b>Favorite drink</b> – Red wine if we’re talking alcohol, lemonade (any flavor) if not.</li>
-      <li><b>Most absurd thing I’ve automated</b> – My heater. Yep, I can turn it on from my phone while coming home in winter. 😅</li>
-      <li><b>Favorite game</b> – Many, but World of Warcraft will always have a place in my heart. Also Gothic — countless sleepless nights spent there.</li>
-      <li><b>If the internet disappeared for a year</b> – Just give me books and don’t bother me. I’ll survive. 😂</li>
-      <li><b>Favorite keyboard sound</b> – I used to like loud blue switches for gaming, but now I prefer quiet linear switches. I type more than I game these days.</li>
-    </ul>
-  </article>
-</Layout>
-<style>
-  .about-container {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 1rem;
-  }
-
-  .about-logo {
-    max-width: 550px; /* размер на десктоп */
-    width: 100%;
-    height: auto;
-    margin: 1rem auto;
-    display: block;
-  }
-
-  @media (max-width: 768px) {
-    .about-logo {
-      max-width: 300px; /* по-малък размер за мобилен */
-    }
-  }
+@media(max-width:1000px){.about-layout{grid-template-columns:1fr;}.page-header{grid-template-columns:1fr;}.header-geo{display:none;}}
+@media(max-width:768px){nav{padding:1rem 1.5rem;}.page-header,.about-layout{padding-left:1.5rem;padding-right:1.5rem;}footer{padding:2rem 1.5rem;flex-direction:column;align-items:flex-start;}}
 </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <a href="/" class="nav-logo">Ivaylo <span>Kolev</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog">Blog</a></li>
+    <li><a href="/about" class="active">About</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="header-text">
+    <p class="page-eyebrow">// The longer version</p>
+    <h1 class="page-title">About Me</h1>
+    <p class="page-sub">I'm Ivaylo — builder, automator, and storyteller. I go by I2KGhost online. Here's the full story, without the fluff.</p>
+  </div>
+  <div class="header-geo" aria-hidden="true">
+    <svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="110,10 204,60 204,160 110,210 16,160 16,60" stroke="#c9923a" stroke-width="1.4"/>
+      <polygon points="110,32 184,74 184,146 110,188 36,146 36,74" stroke="#c9923a" stroke-width="0.9"/>
+      <polygon points="110,56 162,86 162,134 110,164 58,134 58,86" stroke="#c9923a" stroke-width="0.5"/>
+      <circle cx="110" cy="110" r="32" stroke="#3ecfbe" stroke-width="0.8"/>
+      <circle cx="110" cy="110" r="52" stroke="#3ecfbe" stroke-width="0.4" stroke-dasharray="3 8"/>
+      <circle cx="110" cy="110" r="72" stroke="#8b6fff" stroke-width="0.3" stroke-dasharray="2 10"/>
+      <line x1="110" y1="10" x2="110" y2="210" stroke="#c9923a" stroke-width="0.35" stroke-dasharray="3 8"/>
+      <line x1="16" y1="110" x2="204" y2="110" stroke="#c9923a" stroke-width="0.35" stroke-dasharray="3 8"/>
+      <circle cx="110" cy="110" r="3.5" fill="#c9923a" fill-opacity="0.7"/>
+      <circle cx="110" cy="10" r="2" fill="#c9923a" fill-opacity="0.4"/>
+      <circle cx="204" cy="60" r="2" fill="#c9923a" fill-opacity="0.4"/>
+      <circle cx="204" cy="160" r="2" fill="#c9923a" fill-opacity="0.4"/>
+      <circle cx="110" cy="210" r="2" fill="#c9923a" fill-opacity="0.4"/>
+      <circle cx="16" cy="160" r="2" fill="#c9923a" fill-opacity="0.4"/>
+      <circle cx="16" cy="60" r="2" fill="#c9923a" fill-opacity="0.4"/>
+    </svg>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="about-layout">
+  <!-- MAIN CONTENT -->
+  <div class="about-main">
+
+    <div class="about-section reveal">
+      <p class="about-section-label">// Who I am</p>
+      <p>I'm Ivaylo Kolev — a Bulgarian-born builder based in London. Online I go by <strong>I2KGhost</strong>, a name I picked up in my teens when I needed something that wasn't already taken on every platform. The "I2K" is a shortened version of my name; the "Ghost" is because I've always liked shadows, hidden things, and anything slightly mysterious.</p>
+      <p>By day I work at Amazon's fulfilment centre in Dartford. By night (and weekends) I build automation tools, work through AI and security learning paths, and develop a fantasy universe called Drekoria that's been living in my head since I was a teenager reading fantasy novels.</p>
+    </div>
+
+    <div class="about-section reveal">
+      <p class="about-section-label">// How I got into tech</p>
+      <p>My first serious encounter with code was around 2007–2008 when I joined a college course on computer networks. At the time I had no idea what any of it meant. It wasn't until years later — when a private programming university in Bulgaria opened with free courses — that I actually got hooked. Java first (mostly because of Android, and I understood almost nothing), then C, C++, C#, and eventually Python.</p>
+      <p>Python stuck. I can't claim to be an expert, but I can read, write, and debug my way through real problems. That's been enough to build things that actually work — and to know what to reach for when I hit a wall.</p>
+    </div>
+
+    <div class="about-section reveal">
+      <p class="about-section-label">// What I'm building now</p>
+      <p>Right now I'm focused on two main things: building an <strong>AI automation agency</strong> targeting UK small businesses (accounting firms, legal practices, dental clinics, estate agents), and working through the <strong>AWS AI & ML Scholars program</strong> — a free global program run by AWS in collaboration with Udacity, with hands-on work in Amazon Bedrock and PartyRock.</p>
+      <p>I'm also working through <strong>TryHackMe's AI Security learning path</strong> — because building with AI and understanding how it can be exploited are increasingly the same skill set. Prompt injection, LLM red-teaming, and threat modelling for AI systems are things I care about knowing properly.</p>
+      <p>And then there's <strong>Drekoria</strong> — a fantasy world I've been building since my teens. It started as an empire name in a novel I was writing. It's become something much bigger: a creative universe with its own lore, podcast concepts, and a community I'm slowly building on Instagram.</p>
+    </div>
+
+    <div class="about-section reveal">
+      <p class="about-section-label">// The path behind me</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-year">2007</span>
+          <div class="timeline-content">
+            <div class="timeline-dot"></div>
+            <p class="timeline-title">First encounter with code</p>
+            <p class="timeline-desc">Computer networks college course. No idea what was happening, but something stuck.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-year">2012</span>
+          <div class="timeline-content">
+            <div class="timeline-dot"></div>
+            <p class="timeline-title">Got hooked on programming</p>
+            <p class="timeline-desc">Free university courses in Bulgaria — Java, C++, C#. Python eventually became the one that stuck.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-year">2015</span>
+          <div class="timeline-content">
+            <div class="timeline-dot"></div>
+            <p class="timeline-title">Drekoria begins</p>
+            <p class="timeline-desc">A fantasy novel idea. An empire named Drekoria. The book stalled — the world never stopped growing.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-year">2018</span>
+          <div class="timeline-content">
+            <div class="timeline-dot"></div>
+            <p class="timeline-title">Moved to London</p>
+            <p class="timeline-desc">Started in hospitality — Grange Hotels, then Leonardo Hotels. Began taking automation and AI seriously as more than a hobby.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-year">2021</span>
+          <div class="timeline-content">
+            <div class="timeline-dot"></div>
+            <p class="timeline-title">Joined Amazon LCY3</p>
+            <p class="timeline-desc">Became Auditor within 3 months. Began taking AI and automation seriously as a career direction.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-year">2026</span>
+          <div class="timeline-content">
+            <div class="timeline-dot"></div>
+            <p class="timeline-title">Building in public</p>
+            <p class="timeline-desc">AI agency, security learning, AWS Scholars — and finally building a home for all of it at ivaylokolev.net.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="about-sidebar">
+
+    <div class="sidebar-card reveal">
+      <p class="sidebar-card-label">Quick facts</p>
+      <div>
+        <div class="fact-item"><span class="fact-label">Based in</span><span class="fact-value">Rainham, London, UK</span></div>
+        <div class="fact-item"><span class="fact-label">Originally from</span><span class="fact-value">Bulgaria</span></div>
+        <div class="fact-item"><span class="fact-label">Online alias</span><span class="fact-value">I2KGhost</span></div>
+        <div class="fact-item"><span class="fact-label">Day job</span><span class="fact-value">Amazon LCY3, Dartford</span></div>
+        <div class="fact-item"><span class="fact-label">Keyboard</span><span class="fact-value">Keychron Q1 Max — Milky Yellow Pro switches</span></div>
+        <div class="fact-item"><span class="fact-label">Favourite drink</span><span class="fact-value">Red wine. Or lemonade, any flavour.</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card reveal">
+      <p class="sidebar-card-label">Tools I use</p>
+      <ul class="sidebar-list">
+        <li><strong>Python</strong> for scripting and automation</li>
+        <li><strong>n8n / Make.com</strong> for no-code workflows</li>
+        <li><strong>Astro</strong> for this site</li>
+        <li><strong>Claude, ChatGPT</strong> daily AI tools</li>
+        <li><strong>Brave + ProtonMail</strong> privacy stack</li>
+        <li><strong>Adobe Premiere Pro</strong> for video</li>
+        <li><strong>Rode PodMic</strong> for recording</li>
+      </ul>
+    </div>
+
+    <div class="sidebar-card reveal">
+      <p class="sidebar-card-label">Currently reading / learning</p>
+      <ul class="sidebar-list">
+        <li>SPIN Selling — Neil Rackham</li>
+        <li>AWS AI Practitioner — Skill Builder</li>
+        <li>TryHackMe AI Security Path</li>
+        <li>Anthropic Academy (prompt engineering)</li>
+      </ul>
+    </div>
+
+    <div class="sidebar-geo" aria-hidden="true">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="45" height="45" stroke="#c9923a" stroke-width="1"/>
+        <rect x="65" y="10" width="45" height="45" stroke="#c9923a" stroke-width="1"/>
+        <rect x="10" y="65" width="45" height="45" stroke="#c9923a" stroke-width="1"/>
+        <rect x="65" y="65" width="45" height="45" stroke="#c9923a" stroke-width="1"/>
+        <rect x="22" y="22" width="21" height="21" stroke="#3ecfbe" stroke-width="0.5"/>
+        <rect x="77" y="77" width="21" height="21" stroke="#3ecfbe" stroke-width="0.5"/>
+        <line x1="55" y1="32" x2="65" y2="32" stroke="#c9923a" stroke-width="0.5" stroke-dasharray="2 4"/>
+        <line x1="60" y1="55" x2="60" y2="65" stroke="#c9923a" stroke-width="0.5" stroke-dasharray="2 4"/>
+      </svg>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<footer>
+  <p class="footer-copy">© 2026 Ivaylo Kolev. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="#" target="_blank">YouTube</a></li>
+    <li><a href="#" target="_blank">Instagram</a></li>
+    <li><a href="#" target="_blank">Patreon</a></li>
+    <li><a href="#" target="_blank">GitHub</a></li>
+  </ul>
+</footer>
+
+<script>
+const canvas=document.getElementById('bg-canvas'),ctx=canvas.getContext('2d');let W,H,particles=[];
+const COLORS=['rgba(201,146,58,','rgba(62,207,190,','rgba(139,111,255,'];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+function Particle(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-0.5)*0.2;this.vy=(Math.random()-0.5)*0.2;this.r=Math.random()*1.3+0.4;this.color=COLORS[Math.floor(Math.random()*3)];this.alpha=Math.random()*0.4+0.07;}
+function init(){resize();particles=[];const c=Math.floor(W*H/14000);for(let i=0;i<c;i++)particles.push(new Particle());}
+function draw(){ctx.clearRect(0,0,W,H);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color+p.alpha+')';ctx.fill();});for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.beginPath();ctx.strokeStyle='rgba(201,146,58,'+(0.05*(1-d/100))+')';ctx.lineWidth=0.5;ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.stroke();}}requestAnimationFrame(draw);}
+window.addEventListener('resize',init);init();draw();
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}});},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
